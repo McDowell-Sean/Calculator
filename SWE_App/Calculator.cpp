@@ -1,5 +1,5 @@
 #include "Calculator.h"
-
+// Temp here for merge
 Calculator::Calculator()
 	:wxFrame(nullptr, wxID_ANY, "Calculator", wxDefaultPosition, wxSize(400, 500))
 {
