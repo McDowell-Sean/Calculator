@@ -44,5 +44,6 @@ public:
 private:
 	wxTextCtrl* display;
 	void OnButtonClicked(wxCommandEvent& event);
+	bool EvaluateExpression(const wxString& expression, double& result);
 	wxDECLARE_EVENT_TABLE();
 };
