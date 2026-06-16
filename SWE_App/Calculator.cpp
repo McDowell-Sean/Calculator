@@ -1,5 +1,41 @@
 #include "Calculator.h"
-// Temp here for merge
+
+wxBEGIN_EVENT_TABLE(Calculator, wxFrame)
+//EVT_BUTTON_RANGE(ID_BUTTON_0, ID_BUTTON_NEGATIVE, Calculator::OnButtonClicked)
+//wxEND_EVENT_TABLE()
+//commented out for rebuilding
+EVT_BUTTON(ID_BUTTON_0, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_1, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_2, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_3, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_4, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_5, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_6, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_7, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_8, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_9, Calculator::OnButtonClicked)
+
+EVT_BUTTON(ID_BUTTON_ADD, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_SUBTRACT, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_MULTIPLY, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_DIVIDE, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_MODULO, Calculator::OnButtonClicked)
+
+EVT_BUTTON(ID_BUTTON_SIN, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_COS, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_TAN, Calculator::OnButtonClicked)
+
+EVT_BUTTON(ID_BUTTON_EQUALS, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_CLEAR, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_BACKSPACE, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_DECIMAL, Calculator::OnButtonClicked)
+EVT_BUTTON(ID_BUTTON_NEGATIVE, Calculator::OnButtonClicked)
+
+wxEND_EVENT_TABLE()
+
+
+
+
 Calculator::Calculator()
 	:wxFrame(nullptr, wxID_ANY, "Calculator", wxDefaultPosition, wxSize(400, 500))
 {
@@ -60,3 +96,58 @@ Calculator::Calculator()
 
 	Centre();
 }
+
+void Calculator::OnButtonClicked(wxCommandEvent& event)
+{
+	int buttonId = event.GetId();
+	if (buttonId == ID_BUTTON_CLEAR)
+	{
+		display->Clear();
+		return;
+	}
+	if (buttonId == ID_BUTTON_BACKSPACE)
+	{
+		wxString currentText = display->GetValue();
+
+		if (!currentText.IsEmpty())
+		{
+			currentText.RemoveLast();
+			display->SetValue(currentText);
+		}
+		return;
+
+	}
+
+	if (buttonId == ID_BUTTON_EQUALS)
+	{
+		return;
+	}
+	wxButton* clickedButton = static_cast<wxButton*>(event.GetEventObject());
+
+	wxString textToAdd = clickedButton->GetLabel();
+	if (buttonId == ID_BUTTON_NEGATIVE)
+	{
+		textToAdd = "-";
+	}
+	if (buttonId == ID_BUTTON_SIN)
+	{
+		textToAdd = "sin ";
+	}
+	if (buttonId == ID_BUTTON_COS)
+	{
+		textToAdd = "cos ";
+	}
+	if (buttonId == ID_BUTTON_TAN)
+	{
+		textToAdd = "tan ";
+	}
+
+	if (display->GetValue() == "0")
+	{
+		display->Clear();
+	}
+	display->AppendText(textToAdd);
+
+
+}
+

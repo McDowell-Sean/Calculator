@@ -43,4 +43,6 @@ public:
 
 private:
 	wxTextCtrl* display;
+	void OnButtonClicked(wxCommandEvent& event);
+	wxDECLARE_EVENT_TABLE();
 };
