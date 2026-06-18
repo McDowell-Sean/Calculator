@@ -1,5 +1,8 @@
 #include "Calculator.h"
 #include <cmath>
+#include "ButtonFactory.h"
+
+
 
 //Temp here for push and submit
 wxBEGIN_EVENT_TABLE(Calculator, wxFrame)
@@ -50,7 +53,46 @@ Calculator::Calculator()
 
 	wxGridSizer* buttonSizer = new wxGridSizer(5, 5, 5, 5);
 
-	auto addButton = [panel, buttonSizer](int id, const wxString& label)
+
+
+	auto addButtonToGrid = [buttonSizer](wxButton* button)
+		{
+			buttonSizer->Add(button, 0, wxEXPAND);
+		};
+
+	addButtonToGrid(ButtonFactory::CreateSinButton(panel));
+	addButtonToGrid(ButtonFactory::CreateCosButton(panel));
+	addButtonToGrid(ButtonFactory::CreateTanButton(panel));
+	addButtonToGrid(ButtonFactory::CreateClearButton(panel));
+	addButtonToGrid(ButtonFactory::CreateBackspaceButton(panel));
+
+	addButtonToGrid(ButtonFactory::CreateSevenButton(panel));
+	addButtonToGrid(ButtonFactory::CreateEightButton(panel));
+	addButtonToGrid(ButtonFactory::CreateNineButton(panel));
+	addButtonToGrid(ButtonFactory::CreateDivideButton(panel));
+	addButtonToGrid(ButtonFactory::CreateModuloButton(panel));
+
+	addButtonToGrid(ButtonFactory::CreateFourButton(panel));
+	addButtonToGrid(ButtonFactory::CreateFiveButton(panel));
+	addButtonToGrid(ButtonFactory::CreateSixButton(panel));
+	addButtonToGrid(ButtonFactory::CreateMultiplyButton(panel));
+	addButtonToGrid(ButtonFactory::CreateSubtractButton(panel));
+
+	addButtonToGrid(ButtonFactory::CreateOneButton(panel));
+	addButtonToGrid(ButtonFactory::CreateTwoButton(panel));
+	addButtonToGrid(ButtonFactory::CreateThreeButton(panel));
+	addButtonToGrid(ButtonFactory::CreateAddButton(panel));
+	addButtonToGrid(ButtonFactory::CreateEqualsButton(panel));
+
+	addButtonToGrid(ButtonFactory::CreateNegativeButton(panel));
+	addButtonToGrid(ButtonFactory::CreateZeroButton(panel));
+	addButtonToGrid(ButtonFactory::CreateDecimalButton(panel));
+
+
+
+
+
+/*	auto addButton = [panel, buttonSizer](int id, const wxString& label)
 		{
 			wxButton* button = new wxButton(panel, id, label);
 
@@ -83,8 +125,8 @@ Calculator::Calculator()
 
 	addButton(ID_BUTTON_NEGATIVE, "+/-");
 	addButton(ID_BUTTON_0, "0");
-	addButton(ID_BUTTON_DECIMAL, ".");
-
+	addButton(ID_BUTTON_DECIMAL, "."); //temp outcomment for testin
+*/
 	buttonSizer->AddSpacer(0);
 	buttonSizer->AddSpacer(0);
 	mainSizer->Add(buttonSizer, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
