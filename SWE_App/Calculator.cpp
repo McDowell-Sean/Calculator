@@ -1,10 +1,9 @@
 #include "Calculator.h"
 #include <cmath>
 #include "ButtonFactory.h"
+#include "CalculatorProcessor.h"
 
 
-
-//Temp here for push and submit
 wxBEGIN_EVENT_TABLE(Calculator, wxFrame)
 EVT_BUTTON(ID_BUTTON_0, Calculator::OnButtonClicked)
 EVT_BUTTON(ID_BUTTON_1, Calculator::OnButtonClicked)
@@ -123,7 +122,9 @@ void Calculator::OnButtonClicked(wxCommandEvent& event)
 	if (buttonId == ID_BUTTON_EQUALS)
 	{
 		double result = 0.0;
-		if (EvaluateExpression(display->GetValue(), result) && std::isfinite(result))
+		//if (EvaluateExpression(display->GetValue(), result) && std::isfinite(result))
+
+		if (CalculatorProcessor::GetInstance()->Calculate(display->GetValue(), result) && std::isfinite(result))
 		{
 			display->Clear();
 			display-> SetValue(wxString::Format("%.12g", result));
@@ -166,136 +167,5 @@ void Calculator::OnButtonClicked(wxCommandEvent& event)
 
 }
 
-namespace
-{
-	bool IsOperator(wxChar character)
-	{
-		return character == '+' || character == '-' || character == '*' || character == '/' || character == '%';
-	}
-	wxString TrimText(wxString text)
-	{
-		text.Trim(true);
-		text.Trim(false);
 
-		return text;
-	}
-	bool ConvertToDouble(wxString text, double& value)
-	{
-		text = TrimText(text);
-		if (text.IsEmpty())
-		{
-			return false;
-		}
-
-		if (text.StartsWith("+")) {	return false; }
-		return text.ToDouble(&value);
-	}
-
-	bool FindBinaryOperator(const wxString& expression, size_t& operatorIndex)
-	{
-		for (size_t i = 1; i < expression.length(); i++)
-		{
-			wxChar currentCharacter = expression[i];
-			if (!IsOperator(currentCharacter))
-			{
-				continue;
-			}
-
-			if (currentCharacter == '-' && IsOperator(expression[i - 1]))
-			{
-				continue;
-			}
-			operatorIndex = i;
-			return true;
-
-		}
-		return false;
-	}
-
-}
-
-bool Calculator::EvaluateExpression(const wxString& expression, double& result)
-{
-	wxString text = TrimText(expression);
-
-	if (text.IsEmpty()) { return false; }
-
-	if (text.StartsWith("sin"))
-	{
-		double value = 0.0;
-
-		if (!ConvertToDouble(text.Mid(3), value))
-		{
-			return false;
-		}
-		result = std::sin(value);
-		return true;
-	}
-
-	if (text.StartsWith("cos"))
-	{
-		double value = 0.0;
-
-		if (!ConvertToDouble(text.Mid(3), value))
-		{
-			return false;
-		}
-		result = std::cos(value);
-		return true;
-	}
-
-	if (text.StartsWith("tan"))
-	{
-		double value = 0.0;
-
-		if (!ConvertToDouble(text.Mid(3), value))
-		{
-			return false;
-		}
-		result = std::tan(value);
-		return true;
-	}
-
-	size_t operatorIndex = 0; 
-	if (!FindBinaryOperator(text, operatorIndex)) { return ConvertToDouble(text, result);	 }
-
-	double leftNumber = 0.0;
-	double rightNumber = 0.0;
-
-	wxString leftText = text.Left(operatorIndex);
-	wxString rightText = text.Mid(operatorIndex + 1);
-
-	if (!ConvertToDouble(leftText, leftNumber)) { return false;	}
-	if (!ConvertToDouble(rightText, rightNumber)) { return false; }
-
-	wxChar operation = text[operatorIndex];
-	switch (operation)
-	{
-	case '+':
-		result = leftNumber + rightNumber;
-		return true;
-
-	case '-':
-		result = leftNumber - rightNumber;
-		return true;
-
-	case '*':
-		result = leftNumber * rightNumber;
-		return true;
-
-	case '/':
-		if (rightNumber == 0) { return false; }
-		result = leftNumber / rightNumber;
-		return true;
-
-	case '%':
-		if (rightNumber == 0) { return false;  }
-		result = std::fmod(leftNumber, rightNumber);
-		return true;
-
-
-	default: return false;
-	}
-
-}
 
