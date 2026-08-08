@@ -3,7 +3,7 @@
 #include "ButtonFactory.h"
 #include "CalculatorProcessor.h"
 
-
+//Test
 wxBEGIN_EVENT_TABLE(Calculator, wxFrame)
 EVT_BUTTON(ID_BUTTON_0, Calculator::OnButtonClicked)
 EVT_BUTTON(ID_BUTTON_1, Calculator::OnButtonClicked)
